@@ -1,0 +1,66 @@
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.bmuschko:gradle-tomcat-plugin:2.3"
+  }
+}
+
+apply plugin: 'java'
+apply plugin : 'war'
+apply plugin : 'eclipse-wtp'
+apply plugin: 'com.bmuschko.tomcat'
+
+// JDK 8
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+
+// 	compile 'org.apache.logging.log4j:log4j-core:2.8.2'
+// compile "joda-time:joda-time:2.9.9"
+// compile 'org.springframework:spring-webmvc:4.3.10.RELEASE'
+	//def springVersion = '4.3.10.RELEASE'
+	//spring 'org.springframework:spring-webmvc:${springVersion}'
+
+dependencies {
+    def tomcatVersion = '8.0.42'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+           "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+           "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+
+	compile 'org.springframework:spring-webmvc:4.3.10.RELEASE'
+	compile 'ch.qos.logback:logback-classic:1.2.3'
+	//compile 'javax.servlet:servlet-api:2.5'
+	//compile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
+	compile 'javax.servlet:jstl:1.2'
+
+    testCompile "junit:junit:4.12"
+}
+
+// Embedded Tomcat for testing
+tomcat {
+    httpPort = 8080
+    contextPath = 'codingtest'    
+}
+
+//For Eclipse IDE only
+eclipse {
+
+  wtp {
+    component {
+
+      //define context path, default to project folder name
+      contextPath = 'codingtest'
+
+    }
+
+  }
+}
